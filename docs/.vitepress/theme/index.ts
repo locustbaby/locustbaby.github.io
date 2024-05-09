@@ -13,6 +13,5 @@ export default {
   },
   enhanceApp({ app, router, siteData }) {
     // ...
-  },
-  lastUpdated: true
+  }
 } satisfies Theme

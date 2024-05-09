@@ -16,7 +16,8 @@ export default defineConfig({
         text: 'Examples',
         items: [
           { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' }
+          { text: 'Runtime API Examples', link: '/api-examples' },
+          { text: 'Setup Personal Site', link: '/personal-blog-seo' }
         ]
       }
     ],
@@ -27,5 +28,6 @@ export default defineConfig({
   },
   sitemap: {
     hostname: 'https://locustbaby.github.io'
-  }
+  },
+  lastUpdated: true
 })
