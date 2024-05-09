@@ -24,5 +24,8 @@ export default defineConfig({
     socialLinks: [
       { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
     ]
+  },
+  sitemap: {
+    hostname: 'https://example.com'
   }
 })
