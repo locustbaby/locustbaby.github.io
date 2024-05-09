@@ -23,5 +23,9 @@
   "bugs": {
     "url": "https://github.com/locustbaby/new-blog/issues"
   },
-  "homepage": "https://github.com/locustbaby/new-blog#readme"
+  "homepage": "https://github.com/locustbaby/new-blog#readme",
+  "dependencies": {
+    "busuanzi.pure.js": "^1.0.3",
+    "vitepress-plugin-google-analytics": "^1.0.2"
+  }
 }

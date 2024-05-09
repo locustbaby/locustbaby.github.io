@@ -2,6 +2,9 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
+import googleAnalytics from 'vitepress-plugin-google-analytics'
+import { inBrowser } from 'vitepress'
+import busuanzi from 'busuanzi.pure.js'
 import './style.css'
 
 export default {
@@ -13,5 +16,13 @@ export default {
   },
   enhanceApp({ app, router, siteData }) {
     // ...
+    if (inBrowser) {
+      router.onAfterRouteChanged = () => {
+        busuanzi.fetch()
+      }
+    }
+    googleAnalytics({
+      id: 'G-S2Z93CLEFS', 
+    })
   }
 } satisfies Theme

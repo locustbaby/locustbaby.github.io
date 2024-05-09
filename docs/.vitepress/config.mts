@@ -8,22 +8,35 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
+      // { text: 'Personal Site', link: '/personal-blog-seo' }
     ],
 
     sidebar: [
       {
         text: 'Personal Site',
         items: [
-          { text: 'Markdown Examples', link: '/markdown-examples' },
-          { text: 'Runtime API Examples', link: '/api-examples' },
-          { text: 'Setup Personal Site', link: '/personal-blog-seo' }
+          // { text: 'Markdown Examples', link: '/markdown-examples' },
+          // { text: 'Runtime API Examples', link: '/api-examples' },
+          { text: 'Setup Personal Site', link: '/site/hexo-blog' },
+          { text: 'SEO', link: '/site/seo' }
+        ]
+      },
+      {
+        text: 'Cloud',
+        items: [
+          { text: 'GKE GPU Practice', link: '/cloud/gpu-pool-on-gke' }
+        ]
+      },
+      {
+        text: 'Cloud',
+        items: [
+          { text: 'Shell Concurrency', link: '/code/shell-concurrency' }
         ]
       }
     ],
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/vuejs/vitepress' }
+      { icon: 'github', link: 'https://github.com/locustbaby/locustbaby.github.io' }
     ],
 
     search: {
@@ -46,10 +59,19 @@ export default defineConfig({
           }
         }
       }
-    }
+    },
+    outline: { 
+      level: [2,4],
+    },
   },
   sitemap: {
     hostname: 'https://locustbaby.github.io'
   },
-  lastUpdated: true
+  lastUpdated: true,
+  cleanUrls:true,
+  markdown: {
+    image: {
+      lazyLoading: true
+    },
+  }
 })
