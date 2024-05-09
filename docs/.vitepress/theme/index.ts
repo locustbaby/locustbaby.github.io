@@ -5,9 +5,6 @@ import DefaultTheme from 'vitepress/theme'
 import './style.css'
 
 export default {
-  // for new-blog
-  base: '/new-blog/',
-  assetsDir: '/new-blog/assets',
   extends: DefaultTheme,
   Layout: () => {
     return h(DefaultTheme.Layout, null, {
