@@ -1,16 +1,4 @@
----
-layout:     post
-title:      "Create Your Stunning Hexo Blog with Archer Theme on GitHub Pages"
-subtitle:   "Easy Guide to Installing Hexo with Archer Theme on GitHub and Deploying with GitHub Actions"
-date:       2024-3-21
-author:     "Locustbaby"
-header-img: "img/post-bg-js-module.jpg"
-tags:
-    - hexo tutorial
-    - hexo archer theme
-    - github actions deployment
-    - github pages
----
+# Create Your Stunning Hexo Blog with Archer Theme on GitHub Pages
 
 Step 1. Install Hexo Locally
 
