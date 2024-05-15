@@ -24,7 +24,8 @@ export default defineConfig({
       {
         text: 'Cloud',
         items: [
-          { text: 'GKE GPU Practice', link: '/cloud/gpu-pool-on-gke' }
+          { text: 'GKE GPU Practice', link: '/cloud/gpu-pool-on-gke' },
+          { text: 'Harbor to Cloud Registry', link: '/cloud/harbor-replication-to-cloud' }
         ]
       },
       {
