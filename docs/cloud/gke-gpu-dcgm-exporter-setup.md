@@ -1,6 +1,6 @@
-# Create GPU node-pool on gke and install dcgm exporter
+# Set Up GPU Node Pool on GKE and Deploy DCGM Exporter
 
-## create gpu nodegroup
+## Create GPU NodeGroup
 
 ```bash
 gcloud container node-pools create gpu-time-sharing-highmem     --cluster=your_cluster_name     --machine-type=n1-highmem-4     --region=us-west1     --node-locations "us-west1-a"     --accelerator=type=nvidia-tesla-t4,count=1,gpu-sharing-strategy=time-sharing,max-shared-clients-per-gpu=8

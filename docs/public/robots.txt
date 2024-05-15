@@ -1,4 +1,4 @@
+Sitemap: https://locustbaby.github.io/sitemap.xml
+
 User-agent: *
 Allow: /
-
-Sitemap: https://locustbaby.github.io/sitemap.xml
