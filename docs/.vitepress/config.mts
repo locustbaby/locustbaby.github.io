@@ -24,12 +24,13 @@ export default defineConfig({
       {
         text: 'Cloud',
         items: [
-          { text: 'GKE GPU Practice', link: '/cloud/gpu-pool-on-gke' },
-          { text: 'Harbor to Cloud Registry', link: '/cloud/harbor-replication-to-cloud' }
+          { text: 'GKE GPU Practice', link: '/cloud/gke-gpu-dcgm-exporter-setup' },
+          { text: 'Harbor to Cloud Registry', link: '/cloud/harbor-replication-to-cloud' },
+          { text: 'LB with Certificate Manager certs', link: '/cloud/gcp-terraform-https-lb' }
         ]
       },
       {
-        text: 'Cloud',
+        text: 'Code',
         items: [
           { text: 'Shell Concurrency', link: '/code/shell-concurrency' }
         ]
