@@ -3,7 +3,7 @@
 ## Create GPU NodeGroup
 
 ```bash
-gcloud container node-pools create gpu-time-sharing-highmem     --cluster=your_cluster_name     --machine-type=n1-highmem-4     --region=us-west1     --node-locations "us-west1-a"     --accelerator=type=nvidia-tesla-t4,count=1,gpu-sharing-strategy=time-sharing,max-shared-clients-per-gpu=8
+gcloud container node-pools create gpu-time-sharing-highmem     --cluster=your_cluster_name     --machine-type=n1-standard-8     --region=us-west1     --node-locations "us-west1-a"     --accelerator=type=nvidia-tesla-t4,count=1,gpu-sharing-strategy=time-sharing,max-shared-clients-per-gpu=8 --node-labels=node-role/gpu=true --num-nodes=1 --no-enable-autoupgrade
 ```
 
 ## [install gpu on gke](https://cloud.google.com/kubernetes-engine/docs/how-to/gpus?hl=zh-cn#installing_drivers)
