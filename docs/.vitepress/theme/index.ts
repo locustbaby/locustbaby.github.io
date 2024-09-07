@@ -2,7 +2,6 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import googleAnalytics from 'vitepress-plugin-google-analytics'
 import { inBrowser } from 'vitepress'
 import busuanzi from 'busuanzi.pure.js'
 import './style.css'
@@ -21,8 +20,5 @@ export default {
         busuanzi.fetch()
       }
     }
-    googleAnalytics({
-      id: 'G-S2Z93CLEFS', 
-    })
   }
 } satisfies Theme

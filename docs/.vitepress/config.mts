@@ -3,6 +3,20 @@ import { defineConfig } from 'vitepress'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Locustbaby's Blog",
+  head: [
+    [
+      'script',
+      {
+        async: 'true',
+        src: 'https://www.googletagmanager.com/gtag/js?id=G-S2Z93CLEFS',
+      },
+    ],
+    [
+      'script',
+      {},
+      "window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', 'G-S2Z93CLEFS');",
+    ],
+  ],
   description: "A VitePress Site",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
