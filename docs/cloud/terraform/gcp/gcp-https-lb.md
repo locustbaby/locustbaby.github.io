@@ -1,5 +1,7 @@
 # Create HTTPS LB with Certificate Manager certs
 
+apply a ip
+
 ```hcl
 resource "google_compute_address" "client_lb_ip" {
   name = "client-lb-ip"
