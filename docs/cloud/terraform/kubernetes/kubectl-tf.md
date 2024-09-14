@@ -35,3 +35,9 @@ resource "kubectl_manifest" "sample_apps" {
 # archiving end
 
 ```
+
+local-exec
+
+https://github.com/terraform-providers/terraform-provider-kubernetes/issues/141
+
+如果有帮助，我经常使用这个工具将YAML文件转换为terraform规范。https://github.com/sl1pm4t/k2tf
