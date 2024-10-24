@@ -1,4 +1,33 @@
+import fs from 'fs';
+import path from 'path';
 import { defineConfig } from 'vitepress'
+
+const docsDir = path.resolve(__dirname, '../../docs');
+
+
+function getSidebarItems(dir: string, baseUrl = '') {
+  const items = fs.readdirSync(dir, { withFileTypes: true });
+
+  return items
+    .filter(item => !item.name.startsWith('.') && item.name !== 'index.md' && item.name !== 'public')
+    .map(item => {
+      
+      const fullPath = path.join(dir, item.name);
+      const urlPath = `${baseUrl}/${item.name.replace(/\.md$/, '')}`;
+
+      if (item.isDirectory()) {
+        return {
+          text: item.name.toUpperCase(),
+          collapsible: true,
+          collapsed: false,
+          items: getSidebarItems(fullPath, urlPath),
+        };
+      } else if (item.name.endsWith('.md')) {
+        return { text: item.name.replace('.md', ''), link: urlPath };
+      }
+    })
+    .filter(Boolean) as any[];
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -25,31 +54,7 @@ export default defineConfig({
       // { text: 'Personal Site', link: '/personal-blog-seo' }
     ],
 
-    sidebar: [
-      {
-        text: 'Personal Site',
-        items: [
-          // { text: 'Markdown Examples', link: '/markdown-examples' },
-          // { text: 'Runtime API Examples', link: '/api-examples' },
-          { text: 'Setup Personal Site', link: '/site/hexo-blog' },
-          { text: 'SEO', link: '/site/seo' }
-        ]
-      },
-      {
-        text: 'Cloud',
-        items: [
-          { text: 'GKE GPU Practice', link: '/cloud/gke-gpu-dcgm-exporter-setup' },
-          { text: 'Harbor to Cloud Registry', link: '/cloud/harbor-replication-to-cloud' },
-          { text: 'LB with Certificate Manager certs', link: '/cloud/gcp-terraform-https-lb' }
-        ]
-      },
-      {
-        text: 'Code',
-        items: [
-          { text: 'Shell Concurrency', link: '/code/shell-concurrency' }
-        ]
-      }
-    ],
+    sidebar: getSidebarItems(docsDir),
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/locustbaby/locustbaby.github.io' }

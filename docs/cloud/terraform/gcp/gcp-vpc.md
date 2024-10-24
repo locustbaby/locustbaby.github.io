@@ -1,5 +1,5 @@
 
-
+```hcl
 # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_network
 resource "google_compute_network" "gcp_vpc" {
   name                            = var.gcp_vpc_name
@@ -119,3 +119,4 @@ resource "google_compute_firewall" "fw-allow-proxies" {
 
 # todo: allow client's other vpc cidr
 
+```
