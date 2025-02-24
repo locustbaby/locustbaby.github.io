@@ -88,3 +88,49 @@ echo "Deployment bootstrap (nginx) created"
 EOF
 )
 }
+
+```
+AL2
+
+        MIME-Version: 1.0
+        Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
+
+        --==MYBOUNDARY==
+        Content-Type: text/x-shellscript; charset="us-ascii"
+
+        #!/bin/bash
+        set -ex
+        /etc/eks/bootstrap.sh my-cluster \
+          --b64-cluster-ca certificate-authority \
+          --apiserver-endpoint api-server-endpoint \
+          --dns-cluster-ip service-cidr.10 \
+          --kubelet-extra-args '--max-pods=my-max-pods-value' \
+          --use-max-pods false
+
+        --==MYBOUNDARY==--
+
+        AL2023
+
+        MIME-Version: 1.0
+        Content-Type: multipart/mixed; boundary="MYBOUNDARY"
+
+        --MYBOUNDARY
+        Content-Type: application/node.eks.aws
+
+        ---
+        apiVersion: node.eks.aws/v1alpha1
+        kind: NodeConfig
+        spec:
+          cluster:
+            name: my-cluster
+            apiServerEndpoint: api-server-endpoint
+            certificateAuthority: Y2VydGlmaWNhdGVBdXRob3JpdHk=
+            cidr: 10.100.0.0/16
+          kubelet:
+            config:
+              maxPods: 110
+            flags:
+              - --max-pods=my-max-pods-value
+
+        --MYBOUNDARY--
+```
