@@ -10,3 +10,7 @@ https://docs.terrakube.io/
 
 gaia 2years ago；java
 terrareg flask，easy to update
+
+
+
+terraform null list func: coalesce

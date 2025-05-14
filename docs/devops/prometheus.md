@@ -5,6 +5,24 @@ https://www.reddit.com/r/devops/comments/v34fca/enabling_basic_auth_using_kubepr
 https://github.com/prometheus-community/helm-charts/issues/2828
 
 
+```python
+import getpass
+import bcrypt
+
+password = getpass.getpass("password: ")
+hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
+print(hashed_password.decode())
+```
+
+
+```
+htpasswd -nbBC 10 admin admin123
+kubectl create secret generic web-auth \
+  --from-file=web-config.yaml=./web-auth.yaml \
+  --namespace=monitoring
+```
+
+
 ```yaml
 apiVersion: monitoring.coreos.com/v1
 kind: Prometheus
@@ -18,6 +36,8 @@ metadata:
   name: k8s
   namespace: monitoring
 spec:
+  secrets:
+  - prometheus-k8s-auth-web-config
   containers:
   - name: config-reloader
     args:
@@ -30,7 +50,7 @@ spec:
   - args:
     - --web.console.templates=/etc/prometheus/consoles
     - --web.console.libraries=/etc/prometheus/console_libraries
-    - --storage.tsdb.retention.time=24h
+    - --storage.tsdb.retention.time=60d
     - --config.file=/etc/prometheus/config_out/prometheus.env.yaml
     - --storage.tsdb.path=/prometheus
     - --web.enable-lifecycle
@@ -41,7 +61,7 @@ spec:
       httpGet:
         httpHeaders:
         - name: Authorization
-          value: Basic {user:passwd|base64}
+          value: Basic {echo -n 'user:passwd'|base64}
         path: /-/healthy
         port: web
         scheme: HTTP
@@ -53,7 +73,7 @@ spec:
       httpGet:
         httpHeaders:
         - name: Authorization
-          value: Basic {user:passwd|base64}
+          value: Basic {echo -n 'user:passwd'|base64}
         path: /-/ready
         port: web
         scheme: HTTP
@@ -65,7 +85,7 @@ spec:
       httpGet:
         httpHeaders:
         - name: Authorization
-          value: Basic {user:passwd|base64}
+          value: Basic {echo -n 'user:passwd'|base64}
         path: /-/ready
         port: web
         scheme: HTTP

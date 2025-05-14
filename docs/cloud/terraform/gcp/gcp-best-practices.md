@@ -310,3 +310,19 @@ Private Service Access：适用于通过私有连接访问 Google Cloud 服务�
 
 https://medium.com/google-cloud/private-access-options-for-services-in-gcp-7d5c8b298817
 https://cloud.google.com/resource-manager/reference/rest/v1/projects/setIamPolicy
+
+
+
+gke master endpoint 访问
+https://cloud.google.com/blog/products/containers-kubernetes/new-dns-based-endpoint-for-the-gke-control-plane
+
+gcp firewall rules
+https://docs.databricks.com/gcp/en/security/network/classic/firewall
+
+
+gke not allow startup scripts
+https://groups.google.com/g/kubernetes-users/c/vM-85Y8artw
+
+
+gcp firewalls
+https://cloud.google.com/load-balancing/docs/health-check-concepts?hl=zh-cn#ip-ranges
