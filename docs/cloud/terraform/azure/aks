@@ -1,0 +1,73 @@
+安全：
+控制访问k8s api:
+    https://learn.microsoft.com/en-us/azure/aks/trusted-access-feature
+
+    https://learn.microsoft.com/en-us/azure/aks/private-clusters?tabs=default-basic-networking%2Cazure-portal#connect-to-the-private-cluster
+    https://learn.microsoft.com/en-us/connectors/custom-connectors/azure-active-directory-authentication
+
+    https://medium.com/h7w/deploying-your-aks-cluster-with-terraform-key-points-for-a-successful-production-rollout-e92f1238906f
+    https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_scale_set_extension
+
+
+
+```hcl
+resource "azurerm_resource_group" "example" {
+  name     = "example-aks-rg"
+  location = "East US"
+}
+
+resource "azurerm_kubernetes_cluster" "example" {
+  name                = "example-aks-cluster"
+  location            = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+  dns_prefix          = "exampleaks"
+
+  default_node_pool {
+    name       = "default"
+    node_count = 1
+    vm_size    = "Standard_DS2_v2"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "custom_nodepool" {
+  name                  = "customnp"
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.example.id
+  vm_size               = "Standard_DS2_v2"
+  node_count            = 1
+
+  // Example of using node_taints for custom configuration
+  node_taints = ["dedicated=custom:NoSchedule"]
+  node_labels = {
+    "purpose" = "custom"
+  }
+}
+
+// Example of using azapi_resource to apply a Custom Script Extension
+// This requires careful handling of the VMSS ID associated with the node pool
+// and would typically involve a more complex setup to target the correct VMSS.
+/*
+resource "azapi_resource" "custom_script_extension" {
+  type = "Microsoft.Compute/virtualMachineScaleSets/extensions@2023-09-01"
+  name = "customScriptExtension"
+  parent_id = "<VMSS_ID_OF_THE_NODEPOOL>" // This needs to be dynamically retrieved
+
+  body = jsonencode({
+    properties = {
+      publisher = "Microsoft.Compute"
+      type      = "CustomScriptExtension"
+      typeHandlerVersion = "1.10"
+      autoUpgradeMinorVersion = true
+      settings = {
+        commandToExecute = "echo 'Hello from user data!' > /tmp/userdata.log"
+      }
+    }
+  })
+}
+*/
+
+
+https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource
