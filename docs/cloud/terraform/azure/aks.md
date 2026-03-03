@@ -71,3 +71,17 @@ resource "azapi_resource" "custom_script_extension" {
 
 
 https://registry.terraform.io/providers/Azure/azapi/latest/docs/resources/resource
+
+
+
+https://learn.microsoft.com/en-us/azure/aks/use-managed-identity#enable-a-user-assigned-managed-identity
+
+
+https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview
+
+https://docs.celerdata.com/BYOC/docs/sql-reference/azure/create_service_principal/
+
+
+https://learn.microsoft.com/en-us/azure/storage/blobs/storage-auth-abac
+
+https://docs.azure.cn/en-us/role-based-access-control/conditions-role-assignments-portal#step-1-determine-the-condition-you-need
