@@ -10,7 +10,7 @@ import Footer from '../components/Footer.astro';
   <main class="about-page">
     <section class="about-hero">
       <h1 class="about-title">
-        <span class="about-line">About</span>
+        <span class="about-line outline-text">ABOUT</span>
       </h1>
     </section>
 
@@ -34,13 +34,13 @@ import Footer from '../components/Footer.astro';
       <div class="about-block">
         <h2 class="block-label">Stack</h2>
         <div class="tech-grid">
-          <span class="tech-item">Kubernetes</span>
-          <span class="tech-item">Terraform</span>
+          <span class="tech-item">KUBERNETES</span>
+          <span class="tech-item">TERRAFORM</span>
           <span class="tech-item">GCP / AWS</span>
-          <span class="tech-item">Go</span>
-          <span class="tech-item">Python</span>
-          <span class="tech-item">Prometheus</span>
-          <span class="tech-item">LLM / Agent</span>
+          <span class="tech-item">GOLANG</span>
+          <span class="tech-item">PYTHON</span>
+          <span class="tech-item">PROMETHEUS</span>
+          <span class="tech-item">AI AGENTS</span>
         </div>
       </div>
 
@@ -48,7 +48,7 @@ import Footer from '../components/Footer.astro';
         <h2 class="block-label">Connect</h2>
         <div class="connect-links">
           <a href="https://github.com/locustbaby" target="_blank" rel="noopener" class="connect-link" data-hover>
-            GitHub &rarr;
+            GITHUB &rarr;
           </a>
         </div>
       </div>
@@ -60,118 +60,147 @@ import Footer from '../components/Footer.astro';
   <script>
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from('.about-line', { opacity: 0, y: 80, duration: 1, delay: 0.3, ease: 'power3.out' });
+    function initAboutAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
 
-    document.querySelectorAll('.about-block').forEach((block, i) => {
-      gsap.from(block, {
-        scrollTrigger: { trigger: block, start: 'top 85%' },
-        opacity: 0,
-        y: 40,
-        duration: 0.8,
-        delay: i * 0.1,
-        ease: 'power3.out',
+      gsap.from('.about-line', { opacity: 0, y: 100, rotation: 2, duration: 1.2, delay: 0.2, ease: 'power4.out' });
+
+      document.querySelectorAll('.about-block').forEach((block, i) => {
+        gsap.from(block, {
+          scrollTrigger: { trigger: block, start: 'top 85%' },
+          opacity: 0,
+          y: 60,
+          duration: 1,
+          delay: i * 0.1,
+          ease: 'power3.out',
+        });
       });
+    }
+
+    initAboutAnimations();
+    document.addEventListener('astro:page-load', () => {
+      ScrollTrigger.getAll().forEach(t => t.kill());
+      initAboutAnimations();
     });
   </script>
 </BaseLayout>
 
 <style>
   .about-page {
-    max-width: 740px;
+    max-width: 1000px;
     margin: 0 auto;
-    padding: 10rem 2rem 4rem;
+    padding: 15rem 5vw 10rem;
+    min-height: 100vh;
   }
 
   .about-hero {
-    margin-bottom: 6rem;
+    margin-bottom: 8rem;
   }
 
   .about-title {
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-size: clamp(4rem, 15vw, 12rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 0.8;
   }
 
   .about-line {
-    display: block;
-    overflow: hidden;
+    display: inline-block;
+    transform-origin: left bottom;
   }
 
   .about-content {
     display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 6rem;
   }
 
   .about-block {
     display: grid;
-    grid-template-columns: 120px 1fr;
-    gap: 2rem;
+    grid-template-columns: 200px 1fr;
+    gap: 4rem;
     align-items: start;
+    border-top: 1px solid var(--border);
+    padding-top: 2rem;
   }
 
   .block-label {
-    font-size: 0.75rem;
+    font-size: 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
     color: var(--accent);
-    font-weight: 500;
-    padding-top: 0.3rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
   }
 
   .block-text {
-    font-size: 1.125rem;
-    line-height: 1.8;
-    color: var(--text-muted);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--text);
+    letter-spacing: -0.02em;
   }
 
   .tech-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   .tech-item {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 100px;
+    font-size: 0.9rem;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--text-muted);
+    border-radius: 0;
     color: var(--text-muted);
     font-family: var(--font-mono);
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
   }
 
   .tech-item:hover {
     border-color: var(--accent);
-    color: var(--text);
+    color: #000;
+    background: var(--accent);
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
   }
 
   .connect-links {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   .connect-link {
-    font-size: 1rem;
-    color: var(--text-muted);
-    transition: color 0.3s;
+    font-size: clamp(2rem, 4vw, 4rem);
+    font-weight: 900;
+    color: var(--text);
+    text-transform: uppercase;
+    transition: color 0.3s, transform 0.3s;
+    display: inline-block;
+    width: fit-content;
   }
 
   .connect-link:hover {
     color: var(--accent);
+    transform: translateX(20px);
   }
 
   @media (max-width: 768px) {
     .about-page {
-      padding: 7rem 1.5rem 4rem;
+      padding: 10rem 1.5rem 6rem;
     }
 
     .about-block {
       grid-template-columns: 1fr;
-      gap: 0.75rem;
+      gap: 1.5rem;
+    }
+    
+    .block-label {
+      margin-bottom: 0.5rem;
     }
   }
 </style>

@@ -2,29 +2,104 @@
 const currentPath = Astro.url.pathname;
 
 const links = [
-  { href: '/', label: 'Home' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/about', label: 'About' },
+  { href: '/', label: 'HOME' },
+  { href: '/blog', label: 'BLOG' },
+  { href: '/about', label: 'ABOUT' },
 ];
 ---
 
 <nav class="nav">
   <a href="/" class="nav-logo" data-hover>
-    <span class="logo-text">L</span>
+    <svg xmlns="http://www.w3.org/-logo-svg" viewBox="0 0 100 100" width="32" height="32" fill="none" stroke="currentColor" stroke-width="4">
+      <!-- A stylized placeholder logo -->
+      <path d="M50 10L90 90H10Z" />
+      <path d="M50 30v40M30 60h40" />
+    </svg>
   </a>
-  <div class="nav-links">
-    {links.map(link => (
-      <a
-        href={link.href}
-        class:list={['nav-link', { active: currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) }]}
-        data-hover
-      >
-        <span class="nav-link-text">{link.label}</span>
-        <span class="nav-link-line"></span>
-      </a>
-    ))}
-  </div>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle Menu" data-hover>
+    <span>:-)</span>
+  </button>
 </nav>
+
+<div class="menu-overlay" id="menu-overlay">
+  <div class="menu-background"></div>
+  <div class="menu-content">
+    <div class="menu-links">
+      {links.map(link => (
+        <a
+          href={link.href}
+          class:list={['menu-link', { active: currentPath === link.href || (link.href !== '/' && currentPath.startsWith(link.href)) }]}
+          data-hover
+        >
+          <span class="menu-link-bg">{link.label}</span>
+          <span class="menu-link-text">{link.label}</span>
+        </a>
+      ))}
+    </div>
+    
+    <div class="menu-footer">
+      <p class="menu-contact-title">GET IN TOUCH ///</p>
+      <div class="menu-contact-info">
+        <p><span>Email:</span> contact@locustbaby.com</p>
+        <p><span>GitHub:</span> @locustbaby</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { gsap } from 'gsap';
+
+  function initNav() {
+    const toggle = document.getElementById('nav-toggle');
+    const overlay = document.getElementById('menu-overlay');
+    const links = document.querySelectorAll('.menu-link');
+    
+    if (!toggle || !overlay) return;
+
+    let isOpen = false;
+    const tl = gsap.timeline({ paused: true });
+
+    // Ensure initial state
+    gsap.set(overlay, { display: 'none', opacity: 0 });
+    gsap.set('.menu-background', { scaleY: 0, transformOrigin: 'top' });
+    gsap.set('.menu-link-text', { y: 100, opacity: 0 });
+    gsap.set('.menu-link-bg', { y: 100, opacity: 0 });
+    gsap.set('.menu-footer', { opacity: 0, y: 20 });
+
+    tl.to(overlay, { display: 'block', opacity: 1, duration: 0.1 })
+      .to('.menu-background', { scaleY: 1, duration: 0.6, ease: 'expo.inOut' })
+      .to(toggle.querySelector('span'), { rotation: 90, duration: 0.4, ease: 'back.out' }, "-=0.4")
+      .to('.menu-link-text', { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power4.out' }, "-=0.2")
+      .to('.menu-link-bg', { y: 0, opacity: 0.1, duration: 0.8, stagger: 0.1, ease: 'power4.out' }, "-=0.8")
+      .to('.menu-footer', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' }, "-=0.4");
+
+    const toggleMenu = () => {
+      isOpen = !isOpen;
+      if (isOpen) {
+        tl.play();
+        toggle.innerHTML = '<span>:-(</span>';
+        document.body.style.overflow = 'hidden';
+      } else {
+        tl.reverse();
+        toggle.innerHTML = '<span>:-)</span>';
+        document.body.style.overflow = '';
+      }
+    };
+
+    toggle.addEventListener('click', toggleMenu);
+
+    // Close menu when a link is clicked
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (isOpen) toggleMenu();
+      });
+    });
+  }
+
+  // Handle Astro's ViewTransitions
+  document.addEventListener('astro:page-load', initNav);
+</script>
 
 <style>
   .nav {
@@ -32,91 +107,176 @@ const links = [
     top: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 3rem;
-    backdrop-filter: blur(12px);
-    background: rgba(245, 245, 247, 0.8);
+    padding: 2rem 3rem;
+    pointer-events: none;
+  }
+
+  .nav-logo, .nav-toggle {
+    pointer-events: auto;
   }
 
   .nav-logo {
-    font-family: var(--font-main);
-    font-size: 1.5rem;
+    color: var(--text);
+    transition: transform 0.3s;
+  }
+  
+  .nav-logo:hover {
+    transform: scale(1.1);
+  }
+
+  .nav-toggle {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
     font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-toggle:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
+  }
+
+  .nav-toggle span {
+    display: inline-block;
+  }
+
+  /* Overlay Menu */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    display: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  .menu-background {
+    position: fixed;
+    inset: 0;
+    background: #EAEAEA; /* Light grid background concept from jiejoe */
+    background-image: 
+      linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    transform-origin: top;
+  }
+
+  .menu-content {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 6rem 10%;
+  }
+
+  .menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 4rem;
+  }
+
+  .menu-link {
+    position: relative;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.9;
+    color: #0B0B0B;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .menu-link-text {
+    display: block;
+    position: relative;
+    z-index: 2;
+    transition: color 0.3s, transform 0.3s;
+    -webkit-text-stroke: 2px #0B0B0B;
+    color: transparent;
+  }
+
+  .menu-link:hover .menu-link-text {
+    color: #0B0B0B;
+    transform: translate(10px, -10px);
+  }
+
+  /* 3D shadow effect */
+  .menu-link-bg {
+    position: absolute;
+    top: 5px;
+    left: -5px;
+    z-index: 1;
+    color: var(--accent);
+    opacity: 0.1;
+    transition: opacity 0.3s, transform 0.3s;
+    -webkit-text-stroke: 0;
+  }
+
+  .menu-link:hover .menu-link-bg {
+    opacity: 1;
+    transform: translate(15px, -15px);
+  }
+
+  .menu-link.active .menu-link-text {
+    color: #0B0B0B;
+  }
+  
+  .menu-link.active .menu-link-bg {
+    color: var(--accent);
+    opacity: 1;
+  }
+
+  .menu-footer {
+    margin-top: auto;
+    color: #0B0B0B;
+    font-family: var(--font-mono);
+  }
+
+  .menu-contact-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
     letter-spacing: -0.02em;
   }
 
-  .logo-text {
-    display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  .menu-contact-info p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
   }
 
-  .nav-logo:hover .logo-text {
-    transform: scale(1.2) rotate(-5deg);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 2.5rem;
-  }
-
-  .nav-link {
-    position: relative;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 0.25rem 0;
-    overflow: hidden;
-  }
-
-  .nav-link-text {
-    display: inline-block;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .nav-link:hover .nav-link-text {
-    transform: translateY(-100%);
-  }
-
-  .nav-link::after {
-    content: attr(data-text);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    transition: top 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .nav-link:hover::after {
-    top: 0;
-  }
-
-  .nav-link-line {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: var(--text);
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .nav-link:hover .nav-link-line,
-  .nav-link.active .nav-link-line {
-    transform: scaleX(1);
-    transform-origin: left;
+  .menu-contact-info span {
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 0.5rem;
+    mix-blend-mode: difference;
   }
 
   @media (max-width: 768px) {
     .nav {
-      padding: 1rem 1.5rem;
+      padding: 1.5rem;
     }
-    .nav-links {
-      gap: 1.5rem;
+    .menu-content {
+      padding: 6rem 1.5rem;
     }
   }
 </style>

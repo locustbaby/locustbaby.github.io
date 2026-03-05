@@ -30,7 +30,7 @@ const { title, slug, date, category, categoryColor, excerpt, index } = Astro.pro
     display: flex;
     align-items: center;
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 3rem 0;
     border-bottom: 1px solid var(--border);
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     opacity: 0;
@@ -47,21 +47,22 @@ const { title, slug, date, category, categoryColor, excerpt, index } = Astro.pro
   }
 
   .post-card:hover {
-    padding-left: 1.5rem;
+    padding-left: 2rem;
+    background: rgba(255, 255, 255, 0.02);
   }
 
   .post-line {
-    width: 3px;
+    width: 4px;
     height: 0;
     background: var(--cat-color);
-    border-radius: 2px;
+    border-radius: 0;
     transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     flex-shrink: 0;
   }
 
   .post-card:hover .post-line {
     height: 100%;
-    min-height: 50px;
+    min-height: 80px;
   }
 
   .post-content {
@@ -71,16 +72,17 @@ const { title, slug, date, category, categoryColor, excerpt, index } = Astro.pro
   .post-meta {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-    font-size: 0.75rem;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
+    font-family: var(--font-mono);
   }
 
   .post-category {
     color: var(--cat-color);
-    font-weight: 600;
+    font-weight: 700;
   }
 
   .post-date {
@@ -88,21 +90,24 @@ const { title, slug, date, category, categoryColor, excerpt, index } = Astro.pro
   }
 
   .post-title {
-    font-size: 1.25rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
     transition: color 0.3s;
   }
 
   .post-card:hover .post-title {
     color: var(--cat-color);
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
   }
 
   .post-excerpt {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
+    margin-top: 1rem;
+    font-size: 1rem;
     color: var(--text-muted);
     line-height: 1.6;
+    max-width: 800px;
   }
 
   .post-arrow {

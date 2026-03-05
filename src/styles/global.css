@@ -1,19 +1,19 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
 
 :root {
-  --bg: #f5f5f7;
-  --bg-secondary: #ebebed;
-  --bg-card: rgba(255, 255, 255, 0.6);
-  --text: #1d1d1f;
-  --text-muted: #86868b;
-  --accent: #0071e3;
-  --accent-glow: rgba(0, 113, 227, 0.15);
-  --border: rgba(0, 0, 0, 0.06);
-  --cloud-color: #5856d6;
-  --sre-color: #34c759;
-  --ai-color: #ff2d55;
-  --thoughts-color: #ff9500;
-  --projects-color: #00c7be;
+  --bg: #0B0B0B;
+  --bg-secondary: #111111;
+  --bg-card: rgba(17, 17, 17, 0.8);
+  --text: #FFFFFF;
+  --text-muted: #888888;
+  --accent: #00FF41; /* Neon Green */
+  --accent-glow: rgba(0, 255, 65, 0.15);
+  --border: rgba(255, 255, 255, 0.1);
+  --cloud-color: #00FF41;
+  --sre-color: #00FF41;
+  --ai-color: #00FF41;
+  --thoughts-color: #00FF41;
+  --projects-color: #00FF41;
   --font-main: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
@@ -25,7 +25,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) var(--bg);
 }
@@ -35,6 +34,11 @@ body {
   background: var(--bg);
   color: var(--text);
   overflow-x: hidden;
+  /* Add a subtle grid background to mimic jiejoe menu / tech vibe */
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
 }
 
 a {
@@ -44,11 +48,11 @@ a {
 
 ::selection {
   background: var(--accent);
-  color: #fff;
+  color: #000;
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -56,8 +60,20 @@ a {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
-  border-radius: 2px;
+  background: var(--accent);
+  border-radius: 0;
+}
+
+/* Utility classes for Jiejoe aesthetic */
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text);
+}
+
+.outline-text:hover {
+  color: var(--accent);
+  -webkit-text-stroke: 1px var(--accent);
+  text-shadow: 0 0 20px rgba(0, 255, 65, 0.4);
 }
 
 .page-transition-overlay {

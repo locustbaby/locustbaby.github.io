@@ -1,366 +1,894 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
-import CategoryCard from '../components/CategoryCard.astro';
 import Footer from '../components/Footer.astro';
-import { getCollection } from 'astro:content';
-import { categories } from '../lib/categories';
-
-const posts = await getCollection('blog');
-const categoryCounts = categories.map(cat => ({
-  ...cat,
-  count: posts.filter(p => p.data.category === cat.slug).length,
-}));
 ---
 
-<BaseLayout title="Locust">
+<BaseLayout title="Locust - Building in the Cloud">
   <Nav />
 
-  <canvas id="hero-canvas"></canvas>
-
-  <main class="home">
+  <main class="home" id="scroll-container">
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-label">
-          <span class="hero-label-line"></span>
-          <span class="hero-label-text">WELCOME</span>
-        </div>
         <h1 class="hero-title">
-          <span class="hero-line" data-line="1">Building</span>
-          <span class="hero-line" data-line="2">in the</span>
-          <span class="hero-line hero-highlight" data-line="3">Cloud.</span>
+          <div class="hero-line" data-speed="0.8">
+            <span class="hero-text text-outline">BE WILD!</span>
+          </div>
+          <div class="hero-line" data-speed="1.2">
+            <span class="hero-text">BUILDING</span>
+          </div>
+          <div class="hero-line" data-speed="0.9">
+            <span class="hero-text text-accent">IN THE CLOUD!</span>
+          </div>
         </h1>
-        <p class="hero-sub">
-          Cloud infrastructure, SRE practices, AI agents, and everything in between.
-        </p>
-        <div class="hero-scroll">
-          <span class="scroll-text">Scroll</span>
-          <div class="scroll-line"></div>
+        <div class="hero-scroll-indicator">
+          <div class="scroll-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </div>
+          <span>SCROLL SMOOTHLY</span>
         </div>
       </div>
     </section>
 
-    <section class="categories" id="categories">
-      <div class="section-header">
-        <h2 class="section-title">Explore</h2>
-        <p class="section-sub">Dive into different dimensions</p>
+    <!-- Interactive CSS Widgets Section -->
+    <section class="gallery">
+      <!-- INFRASTRUCTURE: Stacking Blocks Widget -->
+      <div class="gallery-item item-large">
+        <div class="interactive-widget widget-infra" data-speed="1.1">
+          <div class="infra-grid" id="infra-blocks"></div>
+          <div class="gallery-overlay">
+            <span class="gallery-label">INFRASTRUCTURE</span>
+          </div>
+        </div>
       </div>
-      <div class="categories-grid">
-        {categoryCounts.map((cat, i) => (
-          <CategoryCard
-            name={cat.name}
-            slug={cat.slug}
-            description={cat.description}
-            color={cat.color}
-            count={cat.count}
-            index={i}
-          />
-        ))}
+
+      <div class="gallery-text-block" data-speed="0.9">
+        <h2 class="section-title outline-text">WHAT CAN I DO?</h2>
+        <p class="section-desc">Designing highly available systems and pushing the boundaries of cloud-native architecture. <br/>(Click the widgets below!)</p>
+      </div>
+
+      <div class="gallery-grid">
+        <!-- SRE & OPS: Chaos Engineering Dashboard -->
+        <div class="gallery-item item-portrait">
+          <div class="interactive-widget widget-sre" data-speed="1.05">
+            <div class="sre-dashboard">
+              <div class="metrics-row">
+                <div class="uptime-box">
+                   <div class="uptime-label">SYSTEM UPTIME</div>
+                   <div class="uptime-value" id="uptime-val">99.999%</div>
+                </div>
+                <button class="chaos-btn" id="btn-chaos">CHAOS</button>
+              </div>
+              <div class="sre-nodes" id="sre-nodes"></div>
+            </div>
+            <div class="gallery-overlay">
+              <span class="gallery-label">SRE</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- AI AGENTS: Mechanical Lobster Claw -->
+        <div class="gallery-item item-landscape">
+          <div class="interactive-widget widget-ai" data-speed="0.95">
+            <div class="claw-container">
+              <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="lobster-claw" id="lobster-svg">
+                <defs>
+                   <linearGradient id="lobster-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                     <stop offset="0%" stop-color="#FF6B4A" />
+                     <stop offset="100%" stop-color="#D93D1A" />
+                   </linearGradient>
+                </defs>
+                <g class="claw-group">
+                  <!-- Lobster Claw Silhouette -->
+                  <path d="M60 10 C30 10 15 35 15 55 C15 75 30 95 45 100 L45 110 L55 110 L55 100 C55 100 60 102 65 100 L65 110 L75 110 L75 100 C90 95 105 75 105 55 C105 35 90 10 60 10Z" fill="url(#lobster-gradient)" class="claw-body"></path>
+                  <!-- Antenna -->
+                  <path d="M45 15 Q35 5 30 8" stroke="#FF6B4A" stroke-width="2" stroke-linecap="round" class="antenna"></path>
+                  <path d="M75 15 Q85 5 90 8" stroke="#FF6B4A" stroke-width="2" stroke-linecap="round" class="antenna"></path>
+                  <!-- Left Claw -->
+                  <path d="M20 45 C5 40 0 50 5 60 C10 70 20 65 25 55 C28 48 25 45 20 45Z" fill="url(#lobster-gradient)" class="claw-left"></path>
+                  <!-- Right Claw -->
+                  <path d="M100 45 C115 40 120 50 115 60 C110 70 100 65 95 55 C92 48 95 45 100 45Z" fill="url(#lobster-gradient)" class="claw-right"></path>
+                  <!-- Eyes -->
+                  <circle cx="45" cy="35" r="6" fill="#000" class="eye"></circle>
+                  <circle cx="75" cy="35" r="6" fill="#000" class="eye"></circle>
+                  <circle cx="46" cy="34" r="2" fill="#fff" class="eye-glow"></circle>
+                  <circle cx="76" cy="34" r="2" fill="#fff" class="eye-glow"></circle>
+                </g>
+              </svg>
+            </div>
+            <div class="gallery-overlay">
+              <span class="gallery-label">AI AGENTS</span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="recent">
-      <div class="section-header">
-        <h2 class="section-title">Recent</h2>
-        <a href="/blog" class="section-link" data-hover>View all &rarr;</a>
-      </div>
-      <div class="recent-list">
-        {posts
-          .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-          .slice(0, 5)
-          .map((post, i) => {
-            const cat = categories.find(c => c.slug === post.data.category);
-            return (
-              <a href={`/blog/${post.id}`} class="recent-item" data-hover style={`--ri: ${i}; --rc: ${cat?.color ?? '#646cff'}`}>
-                <span class="recent-category">{cat?.name}</span>
-                <span class="recent-title">{post.data.title}</span>
-                <span class="recent-date">{post.data.date}</span>
-              </a>
-            );
-          })}
+    <!-- Marquee Section -->
+    <section class="marquee-section">
+      <div class="marquee">
+        <div class="marquee-inner">
+          <div class="marquee-set">
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg" alt="k8s"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" alt="terraform"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="gcp"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original.svg" alt="go"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="docker"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="linux"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-original.svg" alt="prometheus"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original.svg" alt="grafana"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" alt="nginx"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" alt="rust"/></div>
+          </div>
+          <!-- Duplicate for seamless loop -->
+          <div class="marquee-set">
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/kubernetes/kubernetes-plain.svg" alt="k8s"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/terraform/terraform-original.svg" alt="terraform"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="aws"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" alt="gcp"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/go/go-original.svg" alt="go"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="docker"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linux/linux-original.svg" alt="linux"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/prometheus/prometheus-original.svg" alt="prometheus"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/grafana/grafana-original.svg" alt="grafana"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" alt="nginx"/></div>
+            <div class="tech-item"><img class="tech-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/rust/rust-original.svg" alt="rust"/></div>
+          </div>
+        </div>
       </div>
     </section>
+
+    <div class="spacer"></div>
   </main>
 
   <Footer />
 
   <script>
-    import { initScene } from '../scripts/scene';
-
-    const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
-    if (canvas) {
-      initScene(canvas, 'default');
-    }
-
     import { gsap } from 'gsap';
     import { ScrollTrigger } from 'gsap/ScrollTrigger';
-    gsap.registerPlugin(ScrollTrigger);
+    
+    function initHomeAnimations() {
+      gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from('.hero-label', { opacity: 0, x: -30, duration: 1, delay: 0.2, ease: 'power3.out' });
-    gsap.from('.hero-line', { opacity: 0, y: 80, duration: 1, stagger: 0.15, delay: 0.4, ease: 'power3.out' });
-    gsap.from('.hero-sub', { opacity: 0, y: 20, duration: 1, delay: 1, ease: 'power3.out' });
-    gsap.from('.hero-scroll', { opacity: 0, duration: 1, delay: 1.5, ease: 'power3.out' });
+      // Hero Entry Animation (Drop down effect)
+      const tl = gsap.timeline();
+      
+      tl.fromTo('.hero-text', 
+        { y: '-150%' },
+        { y: '0%', duration: 1.5, stagger: 0.15, ease: 'power4.out', delay: 0.2 }
+      )
+      .fromTo('.hero-scroll-indicator', 
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1 }, 
+        "-=1"
+      );
 
-    gsap.from('.section-header', {
-      scrollTrigger: { trigger: '.categories', start: 'top 80%' },
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      ease: 'power3.out',
-    });
-
-    gsap.from('.recent .section-header', {
-      scrollTrigger: { trigger: '.recent', start: 'top 80%' },
-      opacity: 0,
-      y: 40,
-      duration: 0.8,
-      ease: 'power3.out',
-    });
-
-    document.querySelectorAll('.recent-item').forEach((item, i) => {
-      gsap.from(item, {
-        scrollTrigger: { trigger: item, start: 'top 90%' },
-        opacity: 0,
-        x: -30,
-        duration: 0.6,
-        delay: i * 0.05,
-        ease: 'power3.out',
+      // Scroll Parallax - only hero lines, skip widgets (avoid jitter)
+      const heroLines = document.querySelectorAll('.hero [data-speed]');
+      heroLines.forEach((el) => {
+        const speed = parseFloat(el.getAttribute('data-speed') || '1');
+        const yOffset = (1 - speed) * 80;
+        gsap.to(el, {
+          y: yOffset + 'vh',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.hero',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: 1,
+            invalidateOnRefresh: true
+          }
+        });
       });
+
+      // Section text parallax
+      const sectionText = document.querySelector('.gallery-text-block');
+      if (sectionText) {
+        gsap.to(sectionText, {
+          y: '-5vh',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: sectionText,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          }
+        });
+      }
+
+      // Widget reveal - staggered batch for smoothness
+      ScrollTrigger.batch('.interactive-widget', {
+        onEnter: (els) => {
+          gsap.fromTo(els,
+            { clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)', opacity: 0 },
+            { clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)', opacity: 1, duration: 0.8, ease: 'power3.out', stagger: 0.15 }
+          );
+        },
+        start: 'top 92%',
+        once: true
+      });
+
+      // Interactive Logic for Widgets
+      
+      // Infra Blocks Match-3 Game
+      const infraContainer = document.getElementById('infra-blocks');
+      if (infraContainer && !infraContainer.dataset.init) {
+        infraContainer.dataset.init = 'true';
+        infraContainer.innerHTML = '';
+        const C = 6, R = 5;
+        const types = ['infra-db', 'infra-node', 'infra-pod', 'infra-net'];
+        
+        const getIcon = (type) => {
+          if (type === 'infra-db') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>`;
+          if (type === 'infra-node') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>`;
+          if (type === 'infra-pod') return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>`;
+          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>`;
+        };
+
+        let blocks = [];
+
+        for (let c = 0; c < C; c++) {
+          blocks[c] = [];
+          for (let r = 0; r < R; r++) {
+            blocks[c][r] = createBlock(c, r);
+          }
+        }
+
+        function createBlock(c, r) {
+          const type = types[Math.floor(Math.random() * types.length)];
+          const el = document.createElement('div');
+          el.className = `infra-block ${type}`;
+          el.dataset.type = type;
+          el.innerHTML = getIcon(type);
+          
+          el.style.left = `${(c / C) * 100}%`;
+          el.style.top = `${(r / R) * 100}%`;
+          el.style.width = `${100 / C}%`;
+          el.style.height = `${100 / R}%`;
+          
+          el.onclick = (e) => {
+            e.stopPropagation();
+            for (let currC = 0; currC < C; currC++) {
+              for (let currR = 0; currR < R; currR++) {
+                if (blocks[currC][currR] === el) popBlocks(currC, currR);
+              }
+            }
+          };
+          
+          infraContainer.appendChild(el);
+          return el;
+        }
+
+        function popBlocks(clickC, clickR) {
+          const type = blocks[clickC][clickR].dataset.type;
+          let toPop = [];
+          const visited = new Set();
+          
+          const dfs = (c, r) => {
+            if (c < 0 || c >= C || r < 0 || r >= R) return;
+            const key = `${c},${r}`;
+            if (visited.has(key)) return;
+            visited.add(key);
+            
+            if (blocks[c][r] && blocks[c][r].dataset.type === type) {
+              toPop.push({c, r});
+              dfs(c+1, r); dfs(c-1, r); dfs(c, r+1); dfs(c, r-1);
+            }
+          };
+          
+          dfs(clickC, clickR);
+          
+          // Pop minimum 2 connected
+          if (toPop.length >= 2) {
+            toPop.forEach(p => {
+              const el = blocks[p.c][p.r];
+              el.style.transform = 'scale(0)';
+              setTimeout(() => el.remove(), 200);
+              blocks[p.c][p.r] = null;
+            });
+            
+            setTimeout(() => {
+              for (let c = 0; c < C; c++) {
+                let colItems = blocks[c].filter(el => el !== null);
+                let missing = R - colItems.length;
+                
+                let newItems = [];
+                for (let i = 0; i < missing; i++) {
+                  // Span out of bounds top
+                  const el = createBlock(c, -missing + i);
+                  newItems.push(el);
+                }
+                
+                blocks[c] = [...newItems, ...colItems];
+                
+                blocks[c].forEach((el, newR) => {
+                  el.style.top = `${(newR / R) * 100}%`;
+                });
+              }
+            }, 50);
+          }
+        }
+      }
+
+      // SRE Dashboard Minigame
+      const sreNodes = document.getElementById('sre-nodes');
+      const btnChaos = document.getElementById('btn-chaos');
+      const uptimeVal = document.getElementById('uptime-val');
+      
+      if (sreNodes && !sreNodes.dataset.init) {
+        sreNodes.dataset.init = 'true';
+        let activeIncidents = 0;
+        
+        for(let i=0; i<16; i++) {
+          const node = document.createElement('div');
+          node.className = 'sre-node healthy';
+          node.onclick = (e) => {
+             e.stopPropagation();
+             if (node.classList.contains('down')) {
+                node.classList.remove('down');
+                node.classList.add('healthy');
+                activeIncidents--;
+                updateUptime();
+             }
+          };
+          sreNodes.appendChild(node);
+        }
+        
+        function updateUptime() {
+          if(activeIncidents <= 0) {
+             activeIncidents = 0;
+             uptimeVal.innerText = '99.999%';
+             uptimeVal.style.color = '#00ff41';
+          } else {
+             const health = (100 - (activeIncidents * 4.321)).toFixed(3);
+             uptimeVal.innerText = `${health}%`;
+             uptimeVal.style.color = '#ff2d55';
+          }
+        }
+
+        if (btnChaos) {
+          btnChaos.onclick = (e) => {
+            e.stopPropagation();
+            const nodes = Array.from(sreNodes.children);
+            for(let i=0; i<3; i++){
+               const r = Math.floor(Math.random() * nodes.length);
+               if(nodes[r].classList.contains('healthy')) {
+                  nodes[r].classList.remove('healthy');
+                  nodes[r].classList.add('down');
+                  activeIncidents++;
+               }
+            }
+            updateUptime();
+          };
+        }
+      }
+
+      // AI Lobster Claw Interactive Logic
+      const clawGroup = document.querySelector('.claw-group');
+      const widgetAi = document.querySelector('.widget-ai');
+      let isPinching = false;
+      
+      if (clawGroup && widgetAi) {
+        // Toggle pinch on click
+        widgetAi.addEventListener('click', () => {
+          isPinching = !isPinching;
+          clawGroup.classList.toggle('pinched', isPinching);
+          
+          // Electrical discharge effect
+          const svgEl = document.getElementById('lobster-svg');
+          if (svgEl) {
+             svgEl.classList.add('shocked');
+             setTimeout(() => svgEl.classList.remove('shocked'), 300);
+          }
+        });
+        
+        // Follow mouse slightly
+        widgetAi.addEventListener('mousemove', (e) => {
+          const mouseEvent = e;
+          const rect = widgetAi.getBoundingClientRect();
+          const x = (mouseEvent.clientX - rect.left) / rect.width - 0.5;
+          const y = (mouseEvent.clientY - rect.top) / rect.height - 0.5;
+          
+          gsap.to(clawGroup, {
+            rotation: x * 20,
+            x: x * 10,
+            y: y * 10,
+            transformOrigin: '50% 80%',
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+          
+          gsap.to('.eye', { x: x * 4, y: y * 4, duration: 0.2 });
+          gsap.to('.eye-glow', { x: x * 6, y: y * 6, duration: 0.2 });
+        });
+        
+        widgetAi.addEventListener('mouseleave', () => {
+          gsap.to([clawGroup, '.eye', '.eye-glow'], { 
+            rotation: 0, x: 0, y: 0, duration: 0.5, ease: 'power2.out' 
+          });
+        });
+      }
+    }
+
+    // Run on init and after ViewTransitions
+    initHomeAnimations();
+    document.addEventListener('astro:page-load', () => {
+      // Clear old ScrollTriggers
+      ScrollTrigger.getAll().forEach(t => t.kill());
+      initHomeAnimations();
     });
   </script>
 </BaseLayout>
 
 <style>
-  #hero-canvas {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-  }
-
   .home {
-    position: relative;
-    z-index: 1;
+    background-color: var(--bg);
+    min-height: 100vh;
   }
 
+  /* Hero Section */
   .hero {
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
-    padding: 0 3rem;
+    justify-content: center;
+    padding: 0 5vw;
+    position: relative;
+    overflow: hidden;
   }
 
   .hero-content {
-    max-width: 900px;
-  }
-
-  .hero-label {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .hero-label-line {
-    width: 40px;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  .hero-label-text {
-    font-size: 0.75rem;
-    letter-spacing: 0.2em;
-    color: var(--accent);
-    font-weight: 500;
+    width: 100%;
+    z-index: 10;
   }
 
   .hero-title {
-    font-size: clamp(3rem, 8vw, 7rem);
-    font-weight: 700;
-    line-height: 1.05;
-    letter-spacing: -0.03em;
+    font-size: clamp(3rem, 12vw, 15rem);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
   }
 
   .hero-line {
-    display: block;
     overflow: hidden;
+    margin-bottom: -1vw;
+    padding-bottom: 1vw; /* Buffer for letters like G */
   }
 
-  .hero-highlight {
-    background: linear-gradient(135deg, var(--accent), #a855f7);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .hero-text {
+    display: inline-block;
+    transform-origin: left bottom;
   }
 
-  .hero-sub {
-    margin-top: 2rem;
-    font-size: 1.125rem;
-    color: var(--text-muted);
-    max-width: 500px;
-    line-height: 1.7;
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--text);
   }
 
-  .hero-scroll {
+  .text-accent {
+    color: var(--accent);
+    text-shadow: 0 0 40px rgba(0, 255, 65, 0.3);
+  }
+
+  .hero-scroll-indicator {
     position: absolute;
     bottom: 3rem;
-    left: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 1rem;
-  }
-
-  .scroll-text {
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-  }
-
-  .scroll-line {
-    width: 40px;
-    height: 1px;
-    background: var(--text-muted);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .scroll-line::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--accent);
-    animation: scrollPulse 2s ease-in-out infinite;
-  }
-
-  @keyframes scrollPulse {
-    0%, 100% { transform: translateX(-100%); }
-    50% { transform: translateX(100%); }
-  }
-
-  .categories,
-  .recent {
-    padding: 6rem 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 3rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-  }
-
-  .section-sub {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-  }
-
-  .section-link {
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    transition: color 0.3s;
-  }
-
-  .section-link:hover {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
     color: var(--accent);
   }
 
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+  .scroll-icon svg {
+    width: 24px;
+    height: 24px;
+    animation: bounce 2s infinite;
   }
 
-  .recent-list {
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-10px); }
+    60% { transform: translateY(-5px); }
+  }
+
+  /* Interactive Widgets */
+  .gallery {
+    padding: 10vw 5vw;
     display: flex;
     flex-direction: column;
+    gap: 10vw;
   }
 
-  .recent-item {
-    display: grid;
-    grid-template-columns: 100px 1fr auto;
-    gap: 2rem;
+  .interactive-widget {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    opacity: 0;
+    background: #111;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    display: flex;
     align-items: center;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    justify-content: center;
+    transition: border-color 0.5s;
+    will-change: transform, clip-path, opacity;
+  }
+  
+  .interactive-widget:hover {
+    border-color: var(--accent);
   }
 
-  .recent-item:hover {
-    padding-left: 1rem;
+  .gallery-overlay {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    pointer-events: none;
+    z-index: 10;
   }
 
-  .recent-category {
-    font-size: 0.75rem;
+  .gallery-label {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 900;
+    color: var(--text);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--rc);
-    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    border-left: 4px solid var(--accent);
+    transition: color 0.3s, border-color 0.3s;
   }
 
-  .recent-title {
-    font-size: 1.125rem;
-    font-weight: 500;
+  .interactive-widget:hover .gallery-label {
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0, 255, 65, 0.3);
+  }
+
+  /* Infra Widget: Match-3 Grid */
+  .widget-infra {
+    flex-direction: column;
+  }
+  
+  .infra-grid {
+    position: relative;
+    width: 90%;
+    max-width: 450px;
+    height: 60%;
+    overflow: hidden;
+  }
+  
+  :global(.infra-block) {
+    position: absolute;
+    padding: 0.8vw;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: top 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                left 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  :global(.infra-block svg) {
+    width: 100%;
+    height: 100%;
+    stroke: var(--text-muted);
+    transition: all 0.3s;
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15%;
+  }
+
+  :global(.infra-block:hover svg) {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  
+  :global(.infra-block:active) {
+    transform: scale(0.8);
+  }
+
+  :global(.infra-db svg) { stroke: #00ff41; }
+  :global(.infra-node svg) { stroke: #00ffff; }
+  :global(.infra-pod svg) { stroke: #ff00ff; }
+  :global(.infra-net svg) { stroke: #ffff00; }
+
+  :global(.infra-block:hover.infra-db svg) { filter: drop-shadow(0 0 10px #00ff41); border: 1px solid #00ff41; background: rgba(0,255,65,0.1); }
+  :global(.infra-block:hover.infra-node svg) { filter: drop-shadow(0 0 10px #00ffff); border: 1px solid #00ffff; background: rgba(0,255,255,0.1); }
+  :global(.infra-block:hover.infra-pod svg) { filter: drop-shadow(0 0 10px #ff00ff); border: 1px solid #ff00ff; background: rgba(255,0,255,0.1); }
+  :global(.infra-block:hover.infra-net svg) { filter: drop-shadow(0 0 10px #ffff00); border: 1px solid #ffff00; background: rgba(255,255,0,0.1);  }
+
+  /* SRE Widget: Chaos Dashboard */
+  .sre-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 80%;
+    margin-top: 3rem;
+  }
+
+  .metrics-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111;
+    padding: 1rem 1.5rem;
+    border-radius: 4px;
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  }
+
+  .uptime-label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .uptime-value {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 900;
+    font-family: var(--font-mono);
+    color: #00ff41;
     transition: color 0.3s;
   }
 
-  .recent-item:hover .recent-title {
-    color: var(--rc);
+  .chaos-btn {
+    background: transparent;
+    color: #ff2d55;
+    border: 2px solid #ff2d55;
+    padding: 0.8rem 1.5rem;
+    font-weight: 900;
+    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+  
+  .chaos-btn:hover {
+    background: #ff2d55;
+    color: #000;
+    box-shadow: 0 0 15px rgba(255, 45, 85, 0.4);
   }
 
-  .recent-date {
-    font-size: 0.75rem;
+  .chaos-btn:active {
+    transform: scale(0.95);
+  }
+
+  .sre-nodes {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    height: 30vh;
+  }
+
+  :global(.sre-node) {
+    background: #161616;
+    border-radius: 2px;
+    border: 1px solid #333;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  :global(.sre-node::after) {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border-radius: 2px;
+    opacity: 0.2;
+    transition: opacity 0.3s;
+  }
+
+  :global(.sre-node.healthy) {
+    border-color: #004411;
+  }
+  :global(.sre-node.healthy::after) {
+    background: #00ff41;
+    animation: breath 4s infinite alternate;
+  }
+
+  :global(.sre-node.down) {
+    border-color: #ff2d55;
+    animation: nodeShake 0.4s infinite;
+  }
+  :global(.sre-node.down::after) {
+    background: #ff2d55;
+    opacity: 0.8;
+  }
+
+  @keyframes breath {
+    0%, 100% { opacity: 0.1; }
+    50% { opacity: 0.4; }
+  }
+  @keyframes nodeShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px) rotate(-1deg); }
+    75% { transform: translateX(2px) rotate(1deg); }
+  }
+
+  /* AI Widget: Lobster Claw */
+  .claw-container {
+    width: 60%;
+    max-width: 300px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lobster-claw {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(0,255,65,0.2));
+    overflow: visible;
+  }
+
+  .claw-group {
+    /* Base transformation */
+  }
+
+  .claw-left, .claw-right {
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .claw-left {
+    transform-origin: 25px 55px;
+  }
+  
+  .claw-right {
+    transform-origin: 95px 55px;
+  }
+
+  /* Hover to open claws */
+  .widget-ai:hover .claw-left {
+    transform: rotate(-15deg);
+  }
+  .widget-ai:hover .claw-right {
+    transform: rotate(15deg);
+  }
+
+  /* Click to snap shut */
+  :global(.claw-group.pinched) .claw-left {
+    transform: rotate(20deg);
+  }
+  :global(.claw-group.pinched) .claw-right {
+    transform: rotate(-20deg);
+  }
+
+  /* Shock Animation for Lobster */
+  @keyframes electric-shock {
+    0% { filter: drop-shadow(0 0 10px #0FF) brightness(1); transform: translate(2px, 2px); }
+    20% { filter: drop-shadow(0 0 30px #0FF) brightness(1.5); transform: translate(-4px, -2px) rotate(1deg); }
+    40% { filter: drop-shadow(0 0 20px #00F) brightness(2); transform: translate(4px, -4px) rotate(-1deg); }
+    60% { filter: drop-shadow(0 0 50px #FFF) brightness(2.5); transform: translate(-2px, 4px) rotate(2deg); }
+    80% { filter: drop-shadow(0 0 30px #0FF) brightness(1.5); transform: translate(-4px, 4px) rotate(-2deg); }
+    100% { filter: drop-shadow(0 0 10px #0FF) brightness(1.2); transform: translate(2px, -2px); }
+  }
+
+  :global(.lobster-claw.shocked) {
+    animation: electric-shock 0.05s infinite;
+  }
+  
+  :global(.lobster-claw.shocked path) {
+    stroke: #0FF !important;
+    stroke-width: 4px;
+    stroke-dasharray: 4 2;
+  }
+  
+  :global(.lobster-claw.shocked circle) {
+    fill: #0FF !important;
+  }
+
+  .gallery-item.item-large {
+    height: 80vh;
+    width: 100%;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 5vw;
+    height: 70vh;
+  }
+
+  .gallery-text-block {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-title {
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 2rem;
+  }
+
+  .section-desc {
+    font-size: clamp(1.2rem, 2vw, 2rem);
     color: var(--text-muted);
     font-family: var(--font-mono);
   }
 
-  :global(.cursor-follower) {
-    position: fixed;
-    width: 32px;
-    height: 32px;
-    border: 1.5px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 9999;
-    transition: width 0.4s, height 0.4s, border-color 0.4s;
+  /* Marquee */
+  .marquee-section {
+    padding: 5vw 0;
+    overflow: hidden;
+    background: var(--accent);
+    color: #000;
+    transform: rotate(-2deg) scale(1.1);
   }
 
-  :global(.follower-hover) {
-    width: 48px !important;
-    height: 48px !important;
-    border-color: var(--accent) !important;
+  .marquee {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .marquee-inner {
+    display: flex;
+    width: max-content;
+    animation: marquee 20s linear infinite;
+    font-size: clamp(3rem, 6vw, 8rem);
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .marquee-set {
+    display: flex;
+    align-items: center;
+    gap: 4vw;
+    padding-right: 4vw;
+  }
+  
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+  }
+
+  .tech-icon {
+    height: clamp(4rem, 8vw, 10rem);
+    width: auto;
+  }
+
+  @keyframes marquee {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-50%, 0, 0); }
+  }
+
+  .spacer {
+    height: 20vh;
   }
 
   @media (max-width: 768px) {
-    .hero {
-      padding: 0 1.5rem;
+    .gallery-grid {
+      grid-template-columns: 1fr;
+      height: auto;
+      gap: 10vw;
     }
-
-    .categories,
-    .recent {
-      padding: 4rem 1.5rem;
+    
+    .gallery-item.item-portrait {
+      height: 60vh;
     }
-
-    .recent-item {
-      grid-template-columns: 1fr auto;
-    }
-
-    .recent-category {
-      display: none;
-    }
-
-    :global(.cursor-follower) {
-      display: none;
+    
+    .gallery-item.item-landscape {
+      height: 40vh;
     }
   }
 </style>

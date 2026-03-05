@@ -54,12 +54,48 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new D
   <Footer />
 
   <script>
-    import { initScene } from '../../scripts/scene';
-
     const canvas = document.getElementById('blog-canvas') as HTMLCanvasElement;
-    let scene: ReturnType<typeof initScene> | null = null;
     if (canvas) {
-      scene = initScene(canvas, 'default');
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*';
+        const fontSize = 14;
+        const columns = width / fontSize;
+        const drops: number[] = [];
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+
+        function draw() {
+          ctx.fillStyle = 'rgba(11, 11, 11, 0.1)';
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.fillStyle = 'rgba(0, 255, 65, 0.3)'; // Dim green
+          ctx.font = fontSize + 'px monospace';
+
+          for (let i = 0; i < drops.length; i++) {
+            const text = chars[Math.floor(Math.random() * chars.length)];
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+            if (drops[i] * fontSize > height && Math.random() > 0.975) {
+              drops[i] = 0;
+            }
+            drops[i]++;
+          }
+        }
+
+        let interval = setInterval(draw, 33);
+
+        window.addEventListener('resize', () => {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          const newCols = width / fontSize;
+          while(drops.length < newCols) drops.push(Math.random() * height/fontSize);
+        });
+
+        document.addEventListener('astro:before-swap', () => clearInterval(interval), { once: true });
+      }
     }
 
     const params = new URLSearchParams(window.location.search);
@@ -82,9 +118,7 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new D
         btn.classList.toggle('active', (btn as HTMLElement).dataset.filter === category);
       });
 
-      if (scene) {
-        scene.setCategory(category === 'all' ? 'default' : category);
-      }
+      if (window.matrixColorTimeout) clearTimeout(window.matrixColorTimeout);
     }
 
     filters.forEach(btn => {
@@ -128,37 +162,42 @@ const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new D
   }
 
   .blog-title {
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
+    font-size: clamp(4rem, 10vw, 8rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
     margin-bottom: 2rem;
+    color: transparent;
+    -webkit-text-stroke: 2px var(--text);
   }
 
   .blog-filters {
     display: flex;
-    gap: 0.5rem;
+    gap: 1rem;
     flex-wrap: wrap;
   }
 
   .filter-btn {
-    background: none;
+    background: transparent;
     border: 1px solid var(--border);
     color: var(--text-muted);
-    font-family: var(--font-main);
-    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 0.5rem 1rem;
-    border-radius: 100px;
+    letter-spacing: 0.1em;
+    padding: 0.8rem 1.5rem;
+    border-radius: 0;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .filter-btn:hover,
   .filter-btn.active {
-    color: var(--text);
+    color: var(--bg);
     border-color: var(--fc, var(--accent));
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--fc, var(--accent));
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,255,65,0.2);
   }
 
   .blog-list {

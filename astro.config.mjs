@@ -4,7 +4,7 @@ export default defineConfig({
   site: 'https://locustbaby.github.io',
   markdown: {
     shikiConfig: {
-      theme: 'github-light',
+      theme: 'github-dark',
     },
   },
 });
