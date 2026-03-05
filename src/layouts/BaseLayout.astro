@@ -1,0 +1,40 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Locustbaby's Blog - Cloud, SRE, AI Agent, and beyond" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2Z93CLEFS"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-S2Z93CLEFS');
+    </script>
+  </head>
+  <body>
+    <div class="cursor-follower" id="cursor-follower"></div>
+    <div class="page-transition-overlay" id="page-overlay"></div>
+    <slot />
+    <script>
+      import '../scripts/cursor.ts';
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>

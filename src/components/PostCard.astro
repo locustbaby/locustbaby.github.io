@@ -1,0 +1,120 @@
+---
+interface Props {
+  title: string;
+  slug: string;
+  date: string;
+  category: string;
+  categoryColor: string;
+  excerpt?: string;
+  index: number;
+}
+
+const { title, slug, date, category, categoryColor, excerpt, index } = Astro.props;
+---
+
+<a href={`/blog/${slug}`} class="post-card" data-hover style={`--post-index: ${index}; --cat-color: ${categoryColor}`}>
+  <div class="post-line"></div>
+  <div class="post-content">
+    <div class="post-meta">
+      <span class="post-category">{category}</span>
+      <span class="post-date">{date}</span>
+    </div>
+    <h3 class="post-title">{title}</h3>
+    {excerpt && <p class="post-excerpt">{excerpt}</p>}
+  </div>
+  <div class="post-arrow">&rarr;</div>
+</a>
+
+<style>
+  .post-card {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--border);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: postReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--post-index) * 0.08s);
+  }
+
+  @keyframes postReveal {
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .post-card:hover {
+    padding-left: 1.5rem;
+  }
+
+  .post-line {
+    width: 3px;
+    height: 0;
+    background: var(--cat-color);
+    border-radius: 2px;
+    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .post-card:hover .post-line {
+    height: 100%;
+    min-height: 50px;
+  }
+
+  .post-content {
+    flex: 1;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .post-category {
+    color: var(--cat-color);
+    font-weight: 600;
+  }
+
+  .post-date {
+    color: var(--text-muted);
+  }
+
+  .post-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition: color 0.3s;
+  }
+
+  .post-card:hover .post-title {
+    color: var(--cat-color);
+  }
+
+  .post-excerpt {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .post-arrow {
+    font-size: 1.5rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    flex-shrink: 0;
+  }
+
+  .post-card:hover .post-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+</style>

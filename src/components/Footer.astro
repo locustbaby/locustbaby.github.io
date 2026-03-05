@@ -1,0 +1,55 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-line"></div>
+  <div class="footer-content">
+    <p class="footer-copy">&copy; {year}</p>
+    <div class="footer-links">
+      <a href="https://github.com/locustbaby" target="_blank" rel="noopener" data-hover>GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    padding: 2rem 3rem;
+    margin-top: 6rem;
+  }
+
+  .footer-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin-bottom: 2rem;
+  }
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-links a {
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover {
+    color: var(--text);
+  }
+
+  @media (max-width: 768px) {
+    .footer {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>

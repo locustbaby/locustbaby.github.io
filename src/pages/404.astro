@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<BaseLayout title="404 — Locust">
+  <Nav />
+
+  <main class="not-found">
+    <h1 class="nf-code">404</h1>
+    <p class="nf-text">This page drifted into the void.</p>
+    <a href="/" class="nf-link" data-hover>Return home &rarr;</a>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .nf-code {
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 700;
+    letter-spacing: -0.05em;
+    background: linear-gradient(135deg, var(--accent), #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+
+  .nf-text {
+    color: var(--text-muted);
+    font-size: 1.125rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .nf-link {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    border-radius: 100px;
+    transition: all 0.3s;
+  }
+
+  .nf-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+</style>

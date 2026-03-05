@@ -1,0 +1,181 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import PostCard from '../../components/PostCard.astro';
+import Footer from '../../components/Footer.astro';
+import { getCollection } from 'astro:content';
+import { categories, getCategoryColor, getCategoryName } from '../../lib/categories';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+---
+
+<BaseLayout title="Blog — Locust">
+  <Nav />
+
+  <canvas id="blog-canvas"></canvas>
+
+  <main class="blog-page">
+    <section class="blog-header">
+      <h1 class="blog-title">Blog</h1>
+      <div class="blog-filters" id="filters">
+        <button class="filter-btn active" data-filter="all" data-hover>All</button>
+        {categories.map(cat => (
+          <button class="filter-btn" data-filter={cat.slug} data-hover style={`--fc: ${cat.color}`}>
+            {cat.name}
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section class="blog-list" id="blog-list">
+      {sortedPosts.map((post, i) => (
+        <div class="post-wrapper" data-category={post.data.category}>
+          <PostCard
+            title={post.data.title}
+            slug={post.id}
+            date={post.data.date}
+            category={getCategoryName(post.data.category)}
+            categoryColor={getCategoryColor(post.data.category)}
+            excerpt={post.data.excerpt}
+            index={i}
+          />
+        </div>
+      ))}
+    </section>
+
+    {sortedPosts.length === 0 && (
+      <div class="empty-state">
+        <p>No posts yet. Stay tuned.</p>
+      </div>
+    )}
+  </main>
+
+  <Footer />
+
+  <script>
+    import { initScene } from '../../scripts/scene';
+
+    const canvas = document.getElementById('blog-canvas') as HTMLCanvasElement;
+    let scene: ReturnType<typeof initScene> | null = null;
+    if (canvas) {
+      scene = initScene(canvas, 'default');
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const initialCategory = params.get('category');
+
+    const filters = document.querySelectorAll('.filter-btn');
+    const posts = document.querySelectorAll('.post-wrapper');
+
+    function filterPosts(category: string) {
+      posts.forEach((post) => {
+        const el = post as HTMLElement;
+        if (category === 'all' || el.dataset.category === category) {
+          el.style.display = 'block';
+        } else {
+          el.style.display = 'none';
+        }
+      });
+
+      filters.forEach(btn => {
+        btn.classList.toggle('active', (btn as HTMLElement).dataset.filter === category);
+      });
+
+      if (scene) {
+        scene.setCategory(category === 'all' ? 'default' : category);
+      }
+    }
+
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = (btn as HTMLElement).dataset.filter!;
+        filterPosts(filter);
+        history.replaceState(null, '', filter === 'all' ? '/blog' : `/blog?category=${filter}`);
+      });
+    });
+
+    if (initialCategory) {
+      filterPosts(initialCategory);
+    }
+
+    import { gsap } from 'gsap';
+    gsap.from('.blog-title', { opacity: 0, y: 60, duration: 1, delay: 0.2, ease: 'power3.out' });
+    gsap.from('.blog-filters', { opacity: 0, y: 20, duration: 0.8, delay: 0.5, ease: 'power3.out' });
+  </script>
+</BaseLayout>
+
+<style>
+  #blog-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .blog-page {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 8rem 3rem 4rem;
+  }
+
+  .blog-header {
+    margin-bottom: 4rem;
+  }
+
+  .blog-title {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin-bottom: 2rem;
+  }
+
+  .blog-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: var(--text);
+    border-color: var(--fc, var(--accent));
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .blog-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 6rem 0;
+    color: var(--text-muted);
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: 768px) {
+    .blog-page {
+      padding: 6rem 1.5rem 4rem;
+    }
+  }
+</style>

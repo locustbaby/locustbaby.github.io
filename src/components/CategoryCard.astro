@@ -1,0 +1,142 @@
+---
+interface Props {
+  name: string;
+  slug: string;
+  description: string;
+  color: string;
+  count: number;
+  index: number;
+}
+
+const { name, slug, description, color, count, index } = Astro.props;
+---
+
+<a href={`/blog?category=${slug}`} class="category-card" data-hover data-category={slug} style={`--card-color: ${color}; --card-index: ${index}`}>
+  <div class="card-glow"></div>
+  <div class="card-border"></div>
+  <div class="card-content">
+    <div class="card-icon">
+      <svg class="card-icon-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke={color} stroke-width="0.5" opacity="0.3" />
+        <circle cx="50" cy="50" r="25" fill="none" stroke={color} stroke-width="0.5" opacity="0.5" />
+        <circle cx="50" cy="50" r="3" fill={color} />
+      </svg>
+    </div>
+    <h3 class="card-title">{name}</h3>
+    <p class="card-desc">{description}</p>
+    <div class="card-meta">
+      <span class="card-count">{count} posts</span>
+      <span class="card-arrow">&rarr;</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .category-card {
+    position: relative;
+    display: block;
+    padding: 2.5rem 2rem;
+    border-radius: 16px;
+    background: var(--bg-card);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    transform: translateY(60px);
+    animation: cardReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(var(--card-index) * 0.1s + 0.3s);
+  }
+
+  @keyframes cardReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .category-card:hover {
+    transform: translateY(-8px) scale(1.02);
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 120%, var(--card-color), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.6s;
+  }
+
+  .category-card:hover .card-glow {
+    opacity: 0.1;
+  }
+
+  .card-border {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: border-color 0.4s;
+  }
+
+  .category-card:hover .card-border {
+    border-color: var(--card-color);
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .card-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-icon-svg {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .category-card:hover .card-icon-svg {
+    transform: rotate(90deg) scale(1.1);
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+  }
+
+  .card-desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .card-arrow {
+    font-size: 1.25rem;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .category-card:hover .card-arrow {
+    transform: translateX(6px);
+  }
+
+  .category-card:hover .card-count {
+    color: var(--card-color);
+  }
+</style>
